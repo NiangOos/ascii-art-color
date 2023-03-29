@@ -27,8 +27,8 @@ func main() {
 
 			fmt.Println("Usage: go run . [OPTION] [STRING]")
 			fmt.Println()
-
 			fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
+			os.Exit(0)
 		} else {
 			s := os.Args[1]
 			s = src.Antislash(s)
@@ -72,9 +72,8 @@ func main() {
 		} else {
 			fmt.Println("Usage: go run . [OPTION] [STRING]")
 			fmt.Println()
-
 			fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-
+			os.Exit(0)
 		}
 	} else if len(os.Args) == 4 {
 		col := os.Args[1]
@@ -88,11 +87,13 @@ func main() {
 			fmt.Println("Usage: go run . [OPTION] [STRING]")
 			fmt.Println()
 			fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
+			os.Exit(0)
 		}
 	} else {
 		fmt.Println("Usage: go run . [OPTION] [STRING]")
 		fmt.Println()
 		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
+		os.Exit(0)
 	}
 	//setColorANSI("white")
 }

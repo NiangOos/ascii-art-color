@@ -54,9 +54,8 @@ func SetColorRGB(s string) {
 	if err1 != nil || err2 != nil || err3 != nil {
 		fmt.Println("Usage: go run . [OPTION] [STRING]")
 		fmt.Println()
-
 		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		return
+		os.Exit(0)
 	}
 	R := uint8(r)
 	G := uint8(g)
@@ -92,9 +91,8 @@ func SetHSL(str string) (h, s, l float64) {
 	if err1 != nil || err2 != nil || err3 != nil {
 		fmt.Println("Usage: go run . [OPTION] [STRING]")
 		fmt.Println()
-
 		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		return
+		os.Exit(0)
 	}
 	return float64(H), float64(S) / 100, float64(L) / 100
 }
@@ -103,8 +101,8 @@ func HSLtoRGB(h, s, l float64) (r, g, b int) {
 	if h > 320 || h < 0 || s > 100 || s < 0 || l > 100 || l < 0 {
 		fmt.Println("Usage: go run . [OPTION] [STRING]")
 		fmt.Println()
-
 		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
+		os.Exit(0)
 	}
 	c := (1 - math.Abs(2*l-1)) * s
 	x := c * (1 - math.Abs(math.Mod(h/60, 2)-1))
@@ -186,8 +184,8 @@ func All(s string) {
 	if !ChaineValide(s) {
 		fmt.Println("Usage: go run . [OPTION] [STRING]")
 		fmt.Println()
-
 		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
+		os.Exit(0)
 		return
 	}
 	tab := strings.Split(s, "\\n")
@@ -210,9 +208,8 @@ func AllBis(s, col string) {
 	if !ChaineValide(s) {
 		fmt.Println("Usage: go run . [OPTION] [STRING]")
 		fmt.Println()
-
 		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		return
+		os.Exit(0)
 	}
 	tab := strings.Split(s, "\\n")
 	for i, s := range tab {
@@ -298,15 +295,10 @@ func AffMultLineBis(s, src string) {
 }
 
 func AffMultLine(s string) {
-	//tab := IndexToColor("hl", "hello")
 	for i := 1; i <= 8; i++ {
 		for j := 0; j < len(s); j++ {
 			if IsPrintable(s[j]) {
-				/* if IsPresentInArray(j, tab) {
-					SetColorANSI("red")
-				} */
 				Affichage(StartLine(rune(s[j])) + i)
-				//SetColorANSI("white")
 			}
 		}
 		fmt.Println()
@@ -314,12 +306,7 @@ func AffMultLine(s string) {
 }
 
 func ChaineValide(s string) bool {
-	/* if len(s) == 2 {
-		text := s[1]
-		tab := []rune(string(text))
-		return len(tab) == len([]rune(string(text)))
-	}
-	return false */
+
 	tab := []rune(s)
 	return len(tab) == len(s)
 }
