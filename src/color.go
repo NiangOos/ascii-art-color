@@ -16,6 +16,53 @@ type colorsRGB struct {
 	blue  int
 }
 
+func ColArgs4(col string) {
+	col = col[8:]
+	s := os.Args[3]
+	s = Antislash(s)
+	AllBis(s, col)
+}
+
+func BasicAffich() {
+	s := os.Args[1]
+	s = Antislash(s)
+	All(s)
+}
+
+func ColArgs3(col string) {
+	col = col[8:]
+	s := os.Args[2]
+	s = Antislash(s)
+	if len(col) == 7 && col[0] == '#' {
+		// hexadecimal
+		col = strings.ReplaceAll(col, "#", "")
+		SetColorHex(col)
+		All(s)
+		SetColorANSI("white")
+	} else if len(col) > 11 && col[0:4] == "hsl(" && col[len(col)-1] == ')' {
+		// HSL
+		col = strings.ReplaceAll(col, "hsl(", "")
+		col = strings.ReplaceAll(col, ")", "")
+		//fmt.Println(col)
+		SetColorHSL(col)
+		All(s)
+		SetColorANSI("white")
+
+	} else if len(col) > 11 && col[:4] == "rgb(" && col[len(col)-1] == ')' {
+		col = strings.ReplaceAll(col, "rgb(", "")
+		col = strings.ReplaceAll(col, ")", "")
+		SetColorRGB(col)
+		All(s)
+		SetColorANSI("white")
+	} else {
+		//test
+		SetColorANSI(col)
+		All(s)
+		SetColorANSI("white")
+	}
+
+}
+
 func SetColorANSI(s string) {
 	TabColors := []colorsRGB{
 		{"green", 0, 255, 0},
@@ -52,10 +99,7 @@ func SetColorRGB(s string) {
 	g, err2 := strconv.ParseInt(t[1], 10, 64)
 	b, err3 := strconv.ParseInt(t[2], 10, 64)
 	if err1 != nil || err2 != nil || err3 != nil {
-		fmt.Println("Usage: go run . [OPTION] [STRING]")
-		fmt.Println()
-		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		os.Exit(0)
+		ErrorMessageColor()
 	}
 	R := uint8(r)
 	G := uint8(g)
@@ -89,20 +133,14 @@ func SetHSL(str string) (h, s, l float64) {
 	S, err2 := strconv.ParseInt(t[1], 10, 64)
 	L, err3 := strconv.ParseInt(t[2], 10, 64)
 	if err1 != nil || err2 != nil || err3 != nil {
-		fmt.Println("Usage: go run . [OPTION] [STRING]")
-		fmt.Println()
-		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		os.Exit(0)
+		ErrorMessageColor()
 	}
 	return float64(H), float64(S) / 100, float64(L) / 100
 }
 
 func HSLtoRGB(h, s, l float64) (r, g, b int) {
 	if h > 320 || h < 0 || s > 100 || s < 0 || l > 100 || l < 0 {
-		fmt.Println("Usage: go run . [OPTION] [STRING]")
-		fmt.Println()
-		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		os.Exit(0)
+		ErrorMessageColor()
 	}
 	c := (1 - math.Abs(2*l-1)) * s
 	x := c * (1 - math.Abs(math.Mod(h/60, 2)-1))
@@ -182,10 +220,7 @@ func All(s string) {
 		return
 	}
 	if !ChaineValide(s) {
-		fmt.Println("Usage: go run . [OPTION] [STRING]")
-		fmt.Println()
-		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		os.Exit(0)
+		ErrorMessageColor()
 		return
 	}
 	tab := strings.Split(s, "\\n")
@@ -206,10 +241,7 @@ func AllBis(s, col string) {
 		return
 	}
 	if !ChaineValide(s) {
-		fmt.Println("Usage: go run . [OPTION] [STRING]")
-		fmt.Println()
-		fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
-		os.Exit(0)
+		ErrorMessageColor()
 	}
 	tab := strings.Split(s, "\\n")
 	for i, s := range tab {
@@ -341,4 +373,11 @@ func Affichage(m int) {
 func Antislash(s string) string {
 	s = strings.ReplaceAll(s, "\n", "\\n")
 	return s
+}
+
+func ErrorMessageColor() {
+	fmt.Println("Usage: go run . [OPTION] [STRING]")
+	fmt.Println()
+	fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
+	os.Exit(0)
 }
