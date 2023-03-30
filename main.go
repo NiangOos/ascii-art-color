@@ -2,7 +2,6 @@ package main
 
 import (
 	src "color/src"
-	"fmt"
 	"os"
 )
 
@@ -10,9 +9,7 @@ func main() {
 	defer func() {
 		err := recover()
 		if err != nil {
-			fmt.Println("Usage: go run . [OPTION] [STRING]")
-			fmt.Println()
-			fmt.Println("EX: go run . --color=<color> <letters to be colored> \"something\"")
+			src.ErrorMessageColor()
 		}
 	}()
 
